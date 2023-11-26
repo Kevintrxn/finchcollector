@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from .models import Finch
 
 finches = [
@@ -15,6 +14,9 @@ def about(request):
 
 def finches_index(request):
     db_finches = Finch.objects.all()
-    all_finches = list(db_finches) + finches
-    return render(request, 'finches/index.html', {'finches': all_finches})
+    return render(request, 'finches/index.html', {'finches': db_finches})
+
+def finches_detail(request, finch_id):
+    finch = Finch.objects.get(id=finch_id)
+    return render(request, 'finches/detail.html', {'finches': finch})
 
