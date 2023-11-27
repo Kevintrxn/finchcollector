@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from .models import Finch
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .models import Finch
 
 finches = [
     {'name': 'Finchious', 'description': 'A smol bird', 'age': 1},
@@ -18,5 +21,23 @@ def finches_index(request):
 
 def finches_detail(request, finch_id):
     finch = Finch.objects.get(id=finch_id)
-    return render(request, 'finches/detail.html', {'finches': finch})
+    return render(request, 'finches/detail.html', {'finch': finch})
 
+class finchesList(ListView):
+    model = Finch
+    template_name = 'finches/index.html'
+    context_object_name = 'finches'
+
+class finchesCreate(CreateView):
+    model = Finch
+    fields = '__all__'
+    success_url = '/finches/'
+
+class finchesUpdate(UpdateView):
+    model = Finch
+    fields = ['name', 'description', 'age']
+    success_url = '/finches/'
+
+class finchesDelete(DeleteView):
+    model = Finch
+    success_url = '/finches/'
