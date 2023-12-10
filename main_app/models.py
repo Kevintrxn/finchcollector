@@ -8,12 +8,16 @@ MEALS = (
     ('D', 'Dinner')
 )
 
+class Toy(models.Model):
+    name = models.CharField(max_length=100)
 
 # Create your models here.
 class Finch(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     age = models.IntegerField()
+    toys = models.ManyToManyField(Toy)
+
 
     def __str__(self):
         return f'{self.name} ({self.id})'
@@ -22,7 +26,7 @@ class Finch(models.Model):
         return reverse('detail', kwargs={'finch_id': self.id})
     def fed_for_today(self):
         return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
-
+    
 
 class Feeding(models.Model):
     date = models.DateField('feeding date')
